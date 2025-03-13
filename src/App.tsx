@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import slavetemplate from "./slaves/slavetemplate"
+import './index.css';
 
 function App() {
   const [aura, setAura] = useState(0);
@@ -68,12 +69,12 @@ function App() {
   }
 
   return (
-    <div>
-      <div className="text-6xl">Aura Clicker</div>
-      <p className="text-6xl">Clicks: {clicks}</p>
-      <p className="text-6xl">Total Aura: {displayNum(totalAura.toFixed(2))}</p>
+    <div className='text-center flex items-center justify-center flex-col gap-3'>
+      <p className="text-8xl">Aura Clicker</p>
       <p className="text-6xl">Aura: {displayNum(aura.toFixed(2))}</p>
-      <button onClick={handleClick} className="border-2 border-black p-2">
+      <p className="text-4xl">Total Aura: {displayNum(totalAura.toFixed(2))}</p>
+      <p className="text-4xl">Clicks: {clicks}</p>
+      <button onClick={handleClick} className="btn">
         Increase Aura
       </button>
 
@@ -82,7 +83,7 @@ function App() {
         <>
           <p className='text-6xl'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
           <p className='text-3xl'>{slave.getName()} price: {displayNum(slave.getPrice().toFixed(2))}</p>
-          <button onClick={() => handleBuy(slave)} className="border-2 border-black p-2">
+          <button onClick={() => handleBuy(slave)} className="btn">
             Increase {slave.getName()}
           </button>
         </>

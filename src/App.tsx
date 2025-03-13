@@ -3,7 +3,7 @@ import slavetemplate from "./slaves/slavetemplate"
 import './index.css';
 
 function App() {
-  const [aura, setAura] = useState(0);
+  const [aura, setAura] = useState(2000);
   const [totalAura, setTotalAura] = useState(0);
   const [clicks, setClicks] = useState(0);
   const [taita] = useState(() => new slavetemplate("Taita", 0, 0.2, 20, 1.05, 100));
@@ -62,7 +62,10 @@ function App() {
   });
 
   const displayNum = (datum: string) => {
-    if (parseInt(datum) < 1000000) {
+    if (parseFloat(datum) < 1000) {
+      return new Intl.NumberFormat('en-US').format(parseFloat(datum));
+    }
+    if (parseFloat(datum) < 1000000) {
       return new Intl.NumberFormat('en-US', {notation: 'compact'}).format(parseFloat(datum));
     }
     return new Intl.NumberFormat('en-US', {notation: 'scientific'}).format(parseFloat(datum));
@@ -78,16 +81,19 @@ function App() {
         Increase Aura
       </button>
 
-
-      {slaves.map((slave) => (
-        <>
-          <p className='text-6xl'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
-          <p className='text-3xl'>{slave.getName()} price: {displayNum(slave.getPrice().toFixed(2))}</p>
-          <button onClick={() => handleBuy(slave)} className="btn">
-            Increase {slave.getName()}
-          </button>
-        </>
-      ))}
+      <div className='grid grid-cols-2 gap-3 items-center'>
+        {slaves.map((slave) => (
+          <>
+            <div className='flex flex-col flex-wrap gap-2 items-baseline w-6xs p-2'>
+              <p className='text-6xl'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
+              <p className='text-3xl'>{slave.getName()} price: {displayNum(slave.getPrice().toFixed(2))}</p>
+            </div>
+            <button onClick={() => handleBuy(slave)} className="btn">
+              Increase {slave.getName()}
+            </button>
+          </>
+        ))}
+      </div>
     </div>
   );
 }

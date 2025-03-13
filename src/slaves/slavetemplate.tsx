@@ -1,6 +1,7 @@
 class slavetemplate {
     name: string;
     amount: number = 0;
+    numBought: number = 0; 
     speed: number;
     price: number;
     basePrice: number;
@@ -40,6 +41,10 @@ class slavetemplate {
         this.upgradePrice = upgradePrice;
     }
 
+    setNumBought(numBought: number) {
+        this.numBought = numBought;
+    }
+
     getSpeed() {
         return this.speed;
     }
@@ -66,6 +71,10 @@ class slavetemplate {
 
     getName() {
         return this.name;
+    }
+    
+    getNumBought() {
+        return this.numBought;
     }
 }
 

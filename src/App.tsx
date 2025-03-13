@@ -10,6 +10,7 @@ function App() {
   const [jerry] = useState(() => new slavetemplate("Jerry", 0, 0.2, 500, 1.5, 1000));
   const [ayush] = useState(() => new slavetemplate("Ayush", 0, 0.2, 2000, 2.5, 3000));
   const [slaves] = useState([taita, aadi, jerry, ayush]);
+  const [dummy, setDummy] = useState(0); // dummy state to force re-render
 
   const handleBuy = (slave: slavetemplate) => {
     const price = slave.getPrice();
@@ -20,8 +21,10 @@ function App() {
     setAura(newAura);
 
     const newAmount = slave.getAmount() + 1;
+    const newNumBought = slave.getNumBought() + 1;
     slave.setAmount(newAmount);
-    slave.setPrice(Math.pow(slave.getMultiplyer(), slave.getAmount()) * slave.getBasePrice());
+    slave.setNumBought(newNumBought);
+    slave.setPrice(Math.pow(slave.getMultiplyer(), slave.getNumBought()) * slave.getBasePrice());
     slave.setSelf();
   }
 
@@ -29,6 +32,10 @@ function App() {
     setAura((aura) => aura + 1);
     setTotalAura((totalAura) => totalAura + 1);
     setClicks((clicks) => clicks + 1);
+  }
+
+  const forceRender = () => {
+    setDummy(dummy + 1);
   }
 
   useEffect(() => {
@@ -43,14 +50,11 @@ function App() {
           const production = 0.1 * slave.getSpeed() * slave.getAmount();
           const target = slaves[index - 1];
           target.setAmount(target.getAmount() + production);
-          target.setPrice(
-            Math.pow(target.getMultiplyer(), target.getAmount()) * target.getBasePrice()
-          );
           slave.setSelf();
           target.setSelf();
         }
-
       });
+      forceRender();
     }, 100);
 
     return () => clearInterval(interval);
@@ -60,6 +64,7 @@ function App() {
     <div>
       <div className="text-6xl">Aura Clicker</div>
       <p className="text-6xl">Clicks: {clicks}</p>
+      <p className="text-6xl">Total Aura: {totalAura.toFixed(2)}</p>
       <p className="text-6xl">Aura: {aura.toFixed(2)}</p>
       <button onClick={handleClick} className="border-2 border-black p-2">
         Increase Aura

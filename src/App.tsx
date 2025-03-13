@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import slavetemplate from "./slaves/slavetemplate"
 
 function App() {
-  const [aura, setAura] = useState(2000);
+  const [aura, setAura] = useState(0);
   const [totalAura, setTotalAura] = useState(0);
   const [clicks, setClicks] = useState(0);
   const [taita] = useState(() => new slavetemplate("Taita", 0, 0.2, 20, 1.05, 100));
@@ -60,12 +60,19 @@ function App() {
     return () => clearInterval(interval);
   });
 
+  const displayNum = (datum: string) => {
+    if (parseInt(datum) < 1000000) {
+      return new Intl.NumberFormat('en-US', {notation: 'compact'}).format(parseFloat(datum));
+    }
+    return new Intl.NumberFormat('en-US', {notation: 'scientific'}).format(parseFloat(datum));
+  }
+
   return (
     <div>
       <div className="text-6xl">Aura Clicker</div>
       <p className="text-6xl">Clicks: {clicks}</p>
-      <p className="text-6xl">Total Aura: {totalAura.toFixed(2)}</p>
-      <p className="text-6xl">Aura: {aura.toFixed(2)}</p>
+      <p className="text-6xl">Total Aura: {displayNum(totalAura.toFixed(2))}</p>
+      <p className="text-6xl">Aura: {displayNum(aura.toFixed(2))}</p>
       <button onClick={handleClick} className="border-2 border-black p-2">
         Increase Aura
       </button>
@@ -73,8 +80,8 @@ function App() {
 
       {slaves.map((slave) => (
         <>
-          <p className='text-6xl'>{slave.getName()}: {slave.getAmount().toFixed(2)}</p>
-          <p className='text-3xl'>{slave.getName()} price: {slave.getPrice().toFixed(2)}</p>
+          <p className='text-6xl'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
+          <p className='text-3xl'>{slave.getName()} price: {displayNum(slave.getPrice().toFixed(2))}</p>
           <button onClick={() => handleBuy(slave)} className="border-2 border-black p-2">
             Increase {slave.getName()}
           </button>

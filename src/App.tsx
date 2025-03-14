@@ -73,19 +73,20 @@ function App() {
 
   return (
     <div className='text-center flex items-center justify-center flex-col gap-3'>
-      <p className="text-8xl">Aura Clicker</p>
-      <p className="text-6xl">Aura: {displayNum(aura.toFixed(2))}</p>
-      <p className="text-4xl">Total Aura: {displayNum(totalAura.toFixed(2))}</p>
-      <p className="text-4xl">Clicks: {clicks}</p>
-      <button onClick={handleClick} className="btn">
-        Increase Aura
-      </button>
-
+      <div className='flex flex-col gap-3 items-center w-full'>
+        <p className="text-6xl w-auto">Aura Clicker</p>
+        <p className="text-4xl w-auto">Aura: {displayNum(aura.toFixed(2))}</p>
+        <p className="text-2xl">Total Aura: {displayNum(totalAura.toFixed(2))}</p>
+        <p className="text-2xl">Clicks: {clicks}</p>
+        <button onClick={handleClick} className="btn">
+          Increase Aura
+        </button>
+      </div>
       <div className='grid grid-cols-2 gap-3 items-center p-4'>
         {slaves.map((slave) => (
           <>
             <div className='flex flex-col flex-wrap gap-2 items-start w-auto p-2'>
-              <p className='text-6xl text-start w-0'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
+              <p className='text-4xl text-start w-0'>{slave.getName()}: {displayNum(slave.getAmount().toFixed(2))}</p>
               <p className='text-3xl text-start'>{slave.getName()} price: {displayNum(slave.getPrice().toFixed(2))}</p>
             </div>
             <button onClick={() => handleBuy(slave)} className="btn">

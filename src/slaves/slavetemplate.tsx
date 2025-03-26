@@ -1,21 +1,24 @@
+import Decimal from "break_eternity.js";
+
 class slavetemplate {
     name: string;
-    amount: number = 0;
-    numBought: number = 0; 
-    speed: number;
-    price: number;
-    basePrice: number;
-    multiplyer: number;
-    upgradePrice: number;
+    amount: Decimal;
+    numBought: Decimal; 
+    speed: Decimal;
+    price: Decimal;
+    basePrice: Decimal;
+    multiplyer: Decimal;
+    upgradePrice: Decimal;
 
-    constructor(name: string, amount: number, speed: number, price: number, multiplyer: number, upgradePrice: number) {
+    constructor(name: string, amount: number | string, speed: number | string, price: number, multiplyer: number, upgradePrice: number) {
         this.name = name;
-        this.amount = amount;
-        this.speed = speed;
-        this.price = price;
-        this.basePrice = price;
-        this.multiplyer = multiplyer;
-        this.upgradePrice = upgradePrice;
+        this.amount = new Decimal(amount);
+        this.numBought = new Decimal(0);
+        this.speed = new Decimal(speed);
+        this.price = new Decimal(price);
+        this.basePrice = new Decimal(price);
+        this.multiplyer = new Decimal(multiplyer);
+        this.upgradePrice = new Decimal(upgradePrice);
     }
 
     setSelf(): slavetemplate {
@@ -25,55 +28,55 @@ class slavetemplate {
         );
     }
     
-    setAmount(amount: number) {
-        this.amount = amount;
+    setAmount(amount: number | Decimal) {
+        this.amount = amount instanceof Decimal ? amount : new Decimal(amount);
     }
 
-    setSpeed(speed: number) {
-        this.speed = speed;
+    setSpeed(speed: number | Decimal) {
+        this.speed = speed instanceof Decimal ? speed : new Decimal(speed);
     }
 
-    setPrice(price: number) {
-        this.price = price;
+    setPrice(price: number | Decimal) {
+        this.price = price instanceof Decimal ? price : new Decimal(price);
     }
 
-    setUpgradePrice(upgradePrice: number) {
-        this.upgradePrice = upgradePrice;
+    setUpgradePrice(upgradePrice: number | Decimal) {
+        this.upgradePrice = upgradePrice instanceof Decimal ? upgradePrice : new Decimal(upgradePrice);
     }
 
-    setNumBought(numBought: number) {
-        this.numBought = numBought;
+    setNumBought(numBought: number | Decimal) {
+        this.numBought = numBought instanceof Decimal ? numBought : new Decimal(numBought);
     }
 
-    getSpeed() {
+    getSpeed(): Decimal {
         return this.speed;
     }
 
-    getPrice() {
+    getPrice(): Decimal {
         return this.price;
     }
 
-    getBasePrice() {
+    getBasePrice(): Decimal {
         return this.basePrice;
     }
 
-    getUpgradePrice() {
+    getUpgradePrice(): Decimal {
         return this.upgradePrice;
     }
 
-    getAmount() {
+    getAmount(): Decimal {
         return this.amount;
     }
 
-    getMultiplyer() {
+    getMultiplyer(): Decimal {
         return this.multiplyer;
     }
 
-    getName() {
+    getName(): string {
         return this.name;
     }
     
-    getNumBought() {
+    getNumBought(): Decimal {
         return this.numBought;
     }
 }

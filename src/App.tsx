@@ -1,16 +1,25 @@
-import { useState, useEffect } from 'react'
-import Decimal from "break_eternity.js"
-import slavetemplate from "./slaves/slavetemplate"
-import './index.css';
+import { useState, useEffect } from "react";
+import Decimal from "break_eternity.js";
+import slavetemplate from "./slaves/slavetemplate";
+import displayNum from "./displayNum";
+import "./index.css";
 
 function App() {
-  const [aura, setAura] = useState(new Decimal(1000100));
+  const [aura, setAura] = useState(new Decimal(100));
   const [totalAura, setTotalAura] = useState(new Decimal(0));
   const [clicks, setClicks] = useState(0);
-  const [taita] = useState(() => new slavetemplate("Taita", 0, 0.2, 20, 1.05, 100));
-  const [aadi] = useState(() => new slavetemplate("Aadi", 0, 0.2, 100, 1.1, 500));
-  const [jerry] = useState(() => new slavetemplate("Jerry", 0, 0.2, 500, 1.5, 1000));
-  const [ayush] = useState(() => new slavetemplate("Ayush", 0, "1e+2000", 2000, 2.5, 3000)); // only string works here to parse the value into Decimal
+  const [taita] = useState(
+    () => new slavetemplate("Taita", 0, 0.2, 20, 1.05, 100),
+  );
+  const [aadi] = useState(
+    () => new slavetemplate("Aadi", 0, 0.2, 100, 1.1, 500),
+  );
+  const [jerry] = useState(
+    () => new slavetemplate("Jerry", 0, 0.2, 500, 1.5, 1000),
+  );
+  const [ayush] = useState(
+    () => new slavetemplate("Ayush", 0, "0.2", 2000, 2.5, 3000),
+  ); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
 
@@ -26,19 +35,21 @@ function App() {
     const newNumBought = slave.getNumBought().plus(1);
     slave.setAmount(newAmount);
     slave.setNumBought(newNumBought);
-    slave.setPrice(slave.getMultiplyer().pow(newNumBought).times(slave.getBasePrice()));
+    slave.setPrice(
+      slave.getMultiplyer().pow(newNumBought).times(slave.getBasePrice()),
+    );
     slave.setSelf();
-  }
+  };
 
   const handleClick = () => {
     setAura((aura) => aura.plus(1));
     setTotalAura((totalAura) => totalAura.plus(1));
     setClicks((clicks) => clicks + 1);
-  }
+  };
 
   const forceRender = () => {
     setDummy(dummy + 1);
-  }
+  };
 
   useEffect(() => {
     const auraPerSecond = taita.getAmount().times(taita.getSpeed());
@@ -55,7 +66,6 @@ function App() {
             .times(slave.getAmount());
           const target = slaves[index - 1];
           target.setAmount(target.getAmount().plus(production));
-          console.log(target.getAmount());
           slave.setSelf();
           target.setSelf();
         }
@@ -66,22 +76,9 @@ function App() {
     return () => clearInterval(interval);
   });
 
-  const displayNum = (value: Decimal): string => {
-    if (value.lt(new Decimal(1000))) {
-      return value.toFixed(2);
-    }
-    if (value.lt(new Decimal(1000000))) {
-      return value.dividedBy(new Decimal(1000)).toFixed(2) + 'K';
-    }
-    if (value.lt(new Decimal(1000000000))) {
-      return value.dividedBy(new Decimal(1000000)).toFixed(2) + 'M';
-    }
-    return value.toFixed(3);
-  }
-
   return (
-    <div className='text-center flex items-center justify-center flex-col gap-3'>
-      <div className='flex flex-col gap-3 items-center w-full'>
+    <div className="text-center flex items-center justify-center flex-col gap-3">
+      <div className="flex flex-col gap-3 items-center w-full">
         <p className="text-6xl w-auto">Aura Clicker</p>
         <p className="text-4xl w-auto">Aura: {displayNum(aura)}</p>
         <p className="text-2xl">Total Aura: {displayNum(totalAura)}</p>
@@ -90,14 +87,14 @@ function App() {
           Increase Aura
         </button>
       </div>
-      <div className='grid grid-cols-2 gap-3 items-center p-4'>
+      <div className="grid grid-cols-2 gap-3 items-center p-4">
         {slaves.map((slave) => (
           <>
-            <div className='flex flex-col flex-wrap gap-2 items-start w-auto p-2'>
-              <p className='text-4xl text-start w-0'>
+            <div className="flex flex-col flex-wrap gap-2 items-start w-auto p-2">
+              <p className="text-4xl text-start w-0">
                 {slave.getName()}: {displayNum(slave.getAmount())}
               </p>
-              <p className='text-3xl text-start'>
+              <p className="text-3xl text-start">
                 {slave.getName()} price: {displayNum(slave.getPrice())}
               </p>
             </div>

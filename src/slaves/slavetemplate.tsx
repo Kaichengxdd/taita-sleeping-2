@@ -1,84 +1,92 @@
 import Decimal from "break_eternity.js";
 
 class slavetemplate {
-    name: string;
-    amount: Decimal;
-    numBought: Decimal; 
-    speed: Decimal;
-    price: Decimal;
-    basePrice: Decimal;
-    multiplyer: Decimal;
-    upgradePrice: Decimal;
+  name: string;
+  amount: Decimal;
+  numBought: Decimal;
+  speed: Decimal;
+  price: Decimal;
+  basePrice: Decimal;
+  multiplyer: Decimal;
+  upgradePrice: Decimal;
 
-    constructor(name: string, amount: number | string, speed: number | string, price: number, multiplyer: number, upgradePrice: number) {
-        this.name = name;
-        this.amount = new Decimal(amount);
-        this.numBought = new Decimal(0);
-        this.speed = new Decimal(speed);
-        this.price = new Decimal(price);
-        this.basePrice = new Decimal(price);
-        this.multiplyer = new Decimal(multiplyer);
-        this.upgradePrice = new Decimal(upgradePrice);
-    }
+  constructor(
+    name: string,
+    amount: number | string,
+    speed: number | string,
+    price: number,
+    multiplyer: number,
+    upgradePrice: number,
+  ) {
+    this.name = name;
+    this.amount = new Decimal(amount);
+    this.numBought = new Decimal(0);
+    this.speed = new Decimal(speed);
+    this.price = new Decimal(price);
+    this.basePrice = new Decimal(price);
+    this.multiplyer = new Decimal(multiplyer);
+    this.upgradePrice = new Decimal(upgradePrice);
+  }
 
-    setSelf(): slavetemplate {
-        return Object.assign(
-          Object.create(Object.getPrototypeOf(this)),
-          this
-        );
-    }
-    
-    setAmount(amount: number | Decimal) {
-        this.amount = amount instanceof Decimal ? amount : new Decimal(amount);
-    }
+  setSelf(): slavetemplate {
+    return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+  }
 
-    setSpeed(speed: number | Decimal) {
-        this.speed = speed instanceof Decimal ? speed : new Decimal(speed);
-    }
+  setAmount(amount: number | Decimal) {
+    this.amount = amount instanceof Decimal ? amount : new Decimal(amount);
+  }
 
-    setPrice(price: number | Decimal) {
-        this.price = price instanceof Decimal ? price : new Decimal(price);
-    }
+  setSpeed(speed: number | Decimal) {
+    this.speed = speed instanceof Decimal ? speed : new Decimal(speed);
+  }
 
-    setUpgradePrice(upgradePrice: number | Decimal) {
-        this.upgradePrice = upgradePrice instanceof Decimal ? upgradePrice : new Decimal(upgradePrice);
-    }
+  setPrice(price: number | Decimal) {
+    this.price = price instanceof Decimal ? price : new Decimal(price);
+  }
 
-    setNumBought(numBought: number | Decimal) {
-        this.numBought = numBought instanceof Decimal ? numBought : new Decimal(numBought);
-    }
+  setUpgradePrice(upgradePrice: number | Decimal) {
+    this.upgradePrice =
+      upgradePrice instanceof Decimal
+        ? upgradePrice
+        : new Decimal(upgradePrice);
+  }
 
-    getSpeed(): Decimal {
-        return this.speed;
-    }
+  setNumBought(numBought: number | Decimal) {
+    this.numBought =
+      numBought instanceof Decimal ? numBought : new Decimal(numBought);
+  }
 
-    getPrice(): Decimal {
-        return this.price;
-    }
+  getSpeed(): Decimal {
+    return this.speed;
+  }
 
-    getBasePrice(): Decimal {
-        return this.basePrice;
-    }
+  getPrice(): Decimal {
+    return this.price;
+  }
 
-    getUpgradePrice(): Decimal {
-        return this.upgradePrice;
-    }
+  getBasePrice(): Decimal {
+    return this.basePrice;
+  }
 
-    getAmount(): Decimal {
-        return this.amount;
-    }
+  getUpgradePrice(): Decimal {
+    return this.upgradePrice;
+  }
 
-    getMultiplyer(): Decimal {
-        return this.multiplyer;
-    }
+  getAmount(): Decimal {
+    return this.amount;
+  }
 
-    getName(): string {
-        return this.name;
-    }
-    
-    getNumBought(): Decimal {
-        return this.numBought;
-    }
+  getMultiplyer(): Decimal {
+    return this.multiplyer;
+  }
+
+  getName(): string {
+    return this.name;
+  }
+
+  getNumBought(): Decimal {
+    return this.numBought;
+  }
 }
 
 export default slavetemplate;

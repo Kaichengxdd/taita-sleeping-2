@@ -115,12 +115,21 @@ function App() {
                           : ""
                 }
                 alt={slave.getName()}
-                className="w-20 h-25"
+                className="w-20 h-25 rounded"
               />
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded tooltip">
+              <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded tooltip">
                 <p className="text-white text-lg">
                   Each {slave.getName()} produces {displayNum(slave.getSpeed())}{" "}
-                  Aura per second.
+                  {slave.getName() === "Taita"
+                    ? "aura"
+                    : slave.getName() === "Aadi"
+                      ? "Taita"
+                      : slave.getName() === "Jerry"
+                        ? "Aadi"
+                        : slave.getName() === "Ayush"
+                          ? "Jerry"
+                          : "N/A"}{" "}
+                  per second.
                 </p>
               </div>
             </div>

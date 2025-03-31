@@ -7,7 +7,7 @@ class slavetemplate {
   speed: Decimal;
   price: Decimal;
   basePrice: Decimal;
-  multiplyer: Decimal;
+  multiplier: Decimal;
   upgradePrice: Decimal;
 
   constructor(
@@ -24,7 +24,7 @@ class slavetemplate {
     this.speed = new Decimal(speed);
     this.price = new Decimal(price);
     this.basePrice = new Decimal(price);
-    this.multiplyer = new Decimal(multiplyer);
+    this.multiplier = new Decimal(multiplyer);
     this.upgradePrice = new Decimal(upgradePrice);
   }
 
@@ -56,6 +56,11 @@ class slavetemplate {
       numBought instanceof Decimal ? numBought : new Decimal(numBought);
   }
 
+  setMultiplier(multiplier: number | Decimal) {
+    this.multiplier =
+      multiplier instanceof Decimal ? multiplier : new Decimal(multiplier);
+  }
+
   getSpeed(): Decimal {
     return this.speed;
   }
@@ -76,8 +81,8 @@ class slavetemplate {
     return this.amount;
   }
 
-  getMultiplyer(): Decimal {
-    return this.multiplyer;
+  getMultiplier(): Decimal {
+    return this.multiplier;
   }
 
   getName(): string {

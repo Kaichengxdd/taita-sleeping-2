@@ -9,16 +9,16 @@ function App() {
   const [totalAura, setTotalAura] = useState(new Decimal(0));
   const [clicks, setClicks] = useState(0);
   const [taita] = useState(
-    () => new slavetemplate("Taita", 0, 0.2, 20, 1.05, 100),
+    () => new slavetemplate("Taita", 0, 0.2, 10, 1000, 100),
   );
   const [aadi] = useState(
-    () => new slavetemplate("Aadi", 0, 0.2, 100, 1.1, 500),
+    () => new slavetemplate("Aadi", 0, 0.2, 1000, 10000, 500),
   );
   const [jerry] = useState(
-    () => new slavetemplate("Jerry", 0, 0.2, 500, 1.5, 1000),
+    () => new slavetemplate("Jerry", 0, 0.2, 100000, 100000, 1000),
   );
   const [ayush] = useState(
-    () => new slavetemplate("Ayush", 0, "0.2", 2000, 2.5, 3000),
+    () => new slavetemplate("Ayush", 0, "0.2", 10000000, 1000000, 3000),
   ); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
@@ -33,11 +33,18 @@ function App() {
 
     const newAmount = slave.getAmount().plus(1);
     const newNumBought = slave.getNumBought().plus(1);
+    const multiplier = slave.getMultiplier();
     slave.setAmount(newAmount);
     slave.setNumBought(newNumBought);
-    slave.setPrice(
-      slave.getMultiplyer().pow(newNumBought).times(slave.getBasePrice()),
-    );
+    if (newNumBought.mod(10).eq(0)) {
+      slave.setPrice(
+        price.multiply(multiplier)
+      )
+      slave.setSpeed(
+        slave.getSpeed().times(10)
+      )
+      // slave.setMultiplier(multiplier.times(100));
+    }
     slave.setSelf();
   };
 
@@ -99,7 +106,15 @@ function App() {
               </p>
             </div>
             <button onClick={() => handleBuy(slave)} className="btn">
-              Increase {slave.getName()}
+              <div
+                className="relative top-0 left-0 min-h-1 bg-gray-300 overflow-visible text-nowrap text-center"
+                style={{
+                  width: `${Math.min(slave.getNumBought().mod(10).toNumber(), 10) * 10}%`,
+                  transition: "width 0.5s ease-in-out",
+                }}
+              >
+              </div>
+              <span className="absolute z-10 text-center">Increase {slave.getName()}</span>
             </button>
           </>
         ))}

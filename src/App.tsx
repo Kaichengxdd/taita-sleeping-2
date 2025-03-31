@@ -106,7 +106,7 @@ function App() {
               </p>
             </div>
             <button onClick={() => handleBuy(slave)} className="btn">
-              <div
+              {/* <div
                 className="relative top-0 left-0 min-h-1 bg-gray-300 overflow-visible text-nowrap text-center"
                 style={{
                   width: `${Math.min(slave.getNumBought().mod(10).toNumber(), 10) * 10}%`,
@@ -114,7 +114,8 @@ function App() {
                 }}
               >
               </div>
-              <span className="absolute z-10 text-center">Increase {slave.getName()}</span>
+              <span className="absolute z-10 text-center">Increase {slave.getName()}</span> */}
+              Increase {slave.getName()}
             </button>
           </>
         ))}

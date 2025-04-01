@@ -4,6 +4,11 @@ import slavetemplate from "./slaves/slavetemplate";
 import displayNum from "./displayNum";
 import "./index.css";
 
+import taitaimage from "./img/taita.png";
+import aadiimage from "./img/aadi.jpg";
+import jerryimage from "./img/jerry.jpg";
+import ayushimage from "./img/ayush.jpg";
+
 function App() {
   const [aura, setAura] = useState(new Decimal(100));
   const [totalAura, setTotalAura] = useState(new Decimal(0));
@@ -37,12 +42,10 @@ function App() {
     slave.setAmount(newAmount);
     slave.setNumBought(newNumBought);
     if (newNumBought.mod(10).eq(0)) {
-      slave.setPrice(
-        price.multiply(multiplier)
-      )
-      slave.setSpeed(
-        slave.getSpeed().times(10)
-      )
+      slave.setPrice(price.multiply(multiplier));
+      slave.setSpeed(slave.getSpeed().times(10));
+      slave.setPrice(price.multiply(multiplier));
+      slave.setSpeed(slave.getSpeed().times(10));
       // slave.setMultiplier(multiplier.times(100));
     }
     slave.setSelf();
@@ -84,8 +87,8 @@ function App() {
   });
 
   return (
-    <div className="text-center flex items-center justify-center flex-col gap-3">
-      <div className="flex flex-col gap-3 items-center w-full">
+    <div className="text-center flex items-center justify-center flex-col gap-3 bg-gray-950">
+      <div className="flex flex-col gap-3 items-center w-full text-textprimary">
         <p className="text-6xl w-auto">Aura Clicker</p>
         <p className="text-4xl w-auto">Aura: {displayNum(aura)}</p>
         <p className="text-2xl">Total Aura: {displayNum(totalAura)}</p>
@@ -94,30 +97,63 @@ function App() {
           Increase Aura
         </button>
       </div>
-      <div className="grid grid-cols-2 gap-3 items-center p-4">
+      <div className="grid gap-3 p-5 w-3/5">
         {slaves.map((slave) => (
-          <>
-            <div className="flex flex-col flex-wrap gap-2 items-start w-auto p-2">
-              <p className="text-4xl text-start w-0">
+          <div
+            key={slave.getName()}
+            className="flex items-center gap-4 border border-border rounded-xl p-4"
+          >
+            <div className="relative group">
+              <img
+                src={
+                  slave.getName() === "Taita"
+                    ? taitaimage
+                    : slave.getName() === "Aadi"
+                      ? aadiimage
+                      : slave.getName() === "Jerry"
+                        ? jerryimage
+                        : slave.getName() === "Ayush"
+                          ? ayushimage
+                          : ""
+                }
+                alt={slave.getName()}
+                className="w-20 h-25 rounded"
+              />
+              <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded tooltip">
+                <p className="text-textsecondary text-lg">
+                  Each {slave.getName()} produces {displayNum(slave.getSpeed())}{" "}
+                  {slave.getName() === "Taita"
+                    ? "aura"
+                    : slave.getName() === "Aadi"
+                      ? "Taita"
+                      : slave.getName() === "Jerry"
+                        ? "Aadi"
+                        : slave.getName() === "Ayush"
+                          ? "Jerry"
+                          : "N/A"}{" "}
+                  per second.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col flex-grow text-textprimary">
+              <p className="text-4xl">
                 {slave.getName()}: {displayNum(slave.getAmount())}
               </p>
-              <p className="text-3xl text-start">
+              <p className="text-3xl">
                 {slave.getName()} price: {displayNum(slave.getPrice())}
               </p>
             </div>
-            <button onClick={() => handleBuy(slave)} className="btn">
-              {/* <div
-                className="relative top-0 left-0 min-h-1 bg-gray-300 overflow-visible text-nowrap text-center"
+            <button onClick={() => handleBuy(slave)} className="btn relative overflow-hidden text-textsecondary">
+              <div className="absolute left-0 top-0 bg-btnbg h-full"
                 style={{
-                  width: `${Math.min(slave.getNumBought().mod(10).toNumber(), 10) * 10}%`,
-                  transition: "width 0.5s ease-in-out",
-                }}
-              >
+                  width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`,
+                }}>
               </div>
-              <span className="absolute z-10 text-center">Increase {slave.getName()}</span> */}
-              Increase {slave.getName()}
+              <span className="relative z-10 flex items-center justify-center w-full h-full mix-blend-difference">
+                Increase {slave.getName()}
+              </span>
             </button>
-          </>
+          </div>
         ))}
       </div>
     </div>

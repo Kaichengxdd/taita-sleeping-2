@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Decimal from "break_eternity.js";
 import slavetemplate from "./slaves/slavetemplate";
 import displayNum from "./displayNum";
+import Achievements from "./Achievements";
 import "./index.css";
 
 import taitaimage from "./img/taita.png";
@@ -133,7 +134,9 @@ function App() {
           className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden"
           style={{ backgroundColor: `${buyQuantity === 1 ? "" : "#c09cfa"}` }}
         >
-          <span className="mix-blend-difference">{buyQuantity === 1 ? "buy one" : "buy max"}</span>
+          <span className="mix-blend-difference">
+            {buyQuantity === 1 ? "buy one" : "buy max"}
+          </span>
         </button>
       </div>
       <div className="grid gap-3 p-2 w-3/5">

@@ -18,13 +18,13 @@
   --color-border: #bbdbfe;
 }
 
-
 @keyframes flash {
-  0%, 100% {
-    opacity: .10;
+  0%,
+  100% {
+    opacity: 0.1;
   }
   50% {
-    opacity: .80;
+    opacity: 0.8;
   }
 }
 

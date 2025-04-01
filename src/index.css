@@ -31,3 +31,7 @@
 .animate-flash {
   animation: flash 2s ease-in-out infinite;
 }
+
+.achv {
+  @apply text-2xl border-2 w-2xs h-fit border-border p-1 rounded-2xl;
+}

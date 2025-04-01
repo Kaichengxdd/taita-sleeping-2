@@ -2,9 +2,14 @@ import React from "react";
 
 function Achievements() {
   return (
-    <>
-      <p>Hello</p>
-    </>
+    <div className="flex flex-col gap-3 items-center w-1/5 text-textprimary">
+      <p className="text-4xl text-textsecondary">Achievements</p>
+      <div className="flex flex-col gap-3 items-center w-full">
+        <span className="achv">Achievement 1</span>
+        <span className="achv">Achievement 2</span>
+        <span className="achv">Achievement 3</span>
+      </div>
+    </div>
   );
 }
 

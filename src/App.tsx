@@ -132,7 +132,7 @@ function App() {
           onClick={toggleBuyMode}
           className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden"
         >
-          {buyQuantity === 1 ? "buy 1" : "buy max"}
+          {buyQuantity === 1 ? "buy one" : "buy max"}
         </button>
       </div>
       <div className="grid gap-3 p-2 w-3/5">
@@ -188,13 +188,13 @@ function App() {
               className="btn relative overflow-hidden text-textsecondary"
             >
               <div
-                className="absolute left-0 top-0 bg-btnlightbg h-full"
+                className="absolute left-0 top-0 bg-btnlightbg h-full transition-all duration-300 ease-in-out animate-flash"
                 style={{
                   width: `${(slave.getNumBought().mod(10).toNumber() + (aura.divide(slave.getPrice()).gt(new Decimal(10)) ? new Decimal(10).subtract(slave.getNumBought().mod(10)).toNumber() : aura.divide(slave.getPrice()).floor().toNumber())) * 10}%`, // also fine here
                 }}
               ></div>
               <div
-                className="absolute left-0 top-0 bg-btnbg h-full"
+                className="absolute left-0 top-0 bg-btnbg h-full transition-all duration-300 ease-in-out"
                 style={{
                   width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`, // tonumber is safe as it never gets too big
                 }}

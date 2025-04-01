@@ -17,3 +17,17 @@
   --color-textdark: #1e1e2f;
   --color-border: #bbdbfe;
 }
+
+
+@keyframes flash {
+  0%, 100% {
+    opacity: .10;
+  }
+  50% {
+    opacity: .80;
+  }
+}
+
+.animate-flash {
+  animation: flash 2s ease-in-out infinite;
+}

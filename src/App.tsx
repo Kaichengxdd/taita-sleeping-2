@@ -27,7 +27,12 @@ function App() {
   ); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
+  const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
 
+  const handleUpgrade = (slave: slavetemplate) => {
+    slave.setPrice(slave.getPrice().multiply(slave.getMultiplier()));
+    slave.setSpeed(slave.getSpeed().times(10));
+  }
   const handleBuy = (slave: slavetemplate) => {
     const price = slave.getPrice();
     if (aura.lt(price)) {
@@ -38,14 +43,10 @@ function App() {
 
     const newAmount = slave.getAmount().plus(1);
     const newNumBought = slave.getNumBought().plus(1);
-    const multiplier = slave.getMultiplier();
     slave.setAmount(newAmount);
     slave.setNumBought(newNumBought);
     if (newNumBought.mod(10).eq(0)) {
-      slave.setPrice(price.multiply(multiplier));
-      slave.setSpeed(slave.getSpeed().times(10));
-      slave.setPrice(price.multiply(multiplier));
-      slave.setSpeed(slave.getSpeed().times(10));
+      handleUpgrade(slave);
       // slave.setMultiplier(multiplier.times(100));
     }
     slave.setSelf();
@@ -59,6 +60,33 @@ function App() {
 
   const forceRender = () => {
     setDummy(dummy + 1);
+  };
+
+  const toggleBuyMode = () => {
+    setBuyQuantity((prev) => (prev === 1 ? 10 : 1));
+  };
+
+  const handleMultiBuy = (slave: slavetemplate) => {
+    const currentBought = slave.getNumBought();
+    const modVal = currentBought.mod(10);
+    const threshold = new Decimal(10).minus(modVal);
+    const price = slave.getPrice();
+    const costToUpgrade = price.times(threshold);
+  
+    if (aura.lt(costToUpgrade)) { // cannot afford 10
+      const affordableUnits = Math.floor(aura.div(price).toNumber());
+      if (affordableUnits === 0) return;
+      const totalCost = price.times(affordableUnits);
+      setAura(aura.minus(totalCost));
+      slave.setAmount(slave.getAmount().plus(affordableUnits));
+      slave.setNumBought(slave.getNumBought().plus(affordableUnits));
+    } else { // can afford 10
+      setAura(aura.minus(costToUpgrade));
+      slave.setAmount(slave.getAmount().plus(threshold));
+      slave.setNumBought(slave.getNumBought().plus(threshold));
+      handleUpgrade(slave);
+    }
+    slave.setSelf();
   };
 
   useEffect(() => {
@@ -97,7 +125,12 @@ function App() {
           Increase Aura
         </button>
       </div>
-      <div className="grid gap-3 p-5 w-3/5">
+      <div className="w-3/5 flex justify-end">
+        <button onClick={toggleBuyMode} className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden">
+          {buyQuantity === 1 ? "buy 1" : "buy max"}
+        </button>
+      </div>
+      <div className="grid gap-3 p-2 w-3/5">
         {slaves.map((slave) => (
           <div
             key={slave.getName()}
@@ -143,7 +176,7 @@ function App() {
                 {slave.getName()} price: {displayNum(slave.getPrice())}
               </p>
             </div>
-            <button onClick={() => handleBuy(slave)} className="btn relative overflow-hidden text-textsecondary">
+            <button onClick={() => buyQuantity === 1 ? handleBuy(slave) : handleMultiBuy(slave)} className="btn relative overflow-hidden text-textsecondary">
               <div className="absolute left-0 top-0 bg-btnbg h-full"
                 style={{
                   width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`,

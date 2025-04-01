@@ -44,6 +44,8 @@ function App() {
     if (newNumBought.mod(10).eq(0)) {
       slave.setPrice(price.multiply(multiplier));
       slave.setSpeed(slave.getSpeed().times(10));
+      slave.setPrice(price.multiply(multiplier));
+      slave.setSpeed(slave.getSpeed().times(10));
       // slave.setMultiplier(multiplier.times(100));
     }
     slave.setSelf();
@@ -85,8 +87,8 @@ function App() {
   });
 
   return (
-    <div className="text-center flex items-center justify-center flex-col gap-3">
-      <div className="flex flex-col gap-3 items-center w-full">
+    <div className="text-center flex items-center justify-center flex-col gap-3 bg-gray-950">
+      <div className="flex flex-col gap-3 items-center w-full text-textprimary">
         <p className="text-6xl w-auto">Aura Clicker</p>
         <p className="text-4xl w-auto">Aura: {displayNum(aura)}</p>
         <p className="text-2xl">Total Aura: {displayNum(totalAura)}</p>
@@ -99,7 +101,7 @@ function App() {
         {slaves.map((slave) => (
           <div
             key={slave.getName()}
-            className="flex items-center gap-4 border rounded-xl p-4"
+            className="flex items-center gap-4 border border-border rounded-xl p-4"
           >
             <div className="relative group">
               <img
@@ -118,7 +120,7 @@ function App() {
                 className="w-20 h-25 rounded"
               />
               <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded tooltip">
-                <p className="text-white text-lg">
+                <p className="text-textsecondary text-lg">
                   Each {slave.getName()} produces {displayNum(slave.getSpeed())}{" "}
                   {slave.getName() === "Taita"
                     ? "aura"
@@ -133,7 +135,7 @@ function App() {
                 </p>
               </div>
             </div>
-            <div className="flex flex-col flex-grow">
+            <div className="flex flex-col flex-grow text-textprimary">
               <p className="text-4xl">
                 {slave.getName()}: {displayNum(slave.getAmount())}
               </p>
@@ -141,8 +143,15 @@ function App() {
                 {slave.getName()} price: {displayNum(slave.getPrice())}
               </p>
             </div>
-            <button onClick={() => handleBuy(slave)} className="btn">
-              Increase {slave.getName()}
+            <button onClick={() => handleBuy(slave)} className="btn relative overflow-hidden text-textsecondary">
+              <div className="absolute left-0 top-0 bg-btnbg h-full"
+                style={{
+                  width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`,
+                }}>
+              </div>
+              <span className="relative z-10 flex items-center justify-center w-full h-full mix-blend-difference">
+                Increase {slave.getName()}
+              </span>
             </button>
           </div>
         ))}

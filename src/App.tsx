@@ -131,8 +131,9 @@ function App() {
         <button
           onClick={toggleBuyMode}
           className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden"
+          style={{ backgroundColor: `${buyQuantity === 1 ? "" : "#c09cfa"}` }}
         >
-          {buyQuantity === 1 ? "buy one" : "buy max"}
+          <span className="mix-blend-difference">{buyQuantity === 1 ? "buy one" : "buy max"}</span>
         </button>
       </div>
       <div className="grid gap-3 p-2 w-3/5">
@@ -157,7 +158,7 @@ function App() {
                 alt={slave.getName()}
                 className="w-20 h-25 rounded"
               />
-              <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded tooltip">
+              <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded-2xl border border-border tooltip">
                 <p className="text-textsecondary text-lg">
                   Each {slave.getName()} produces {displayNum(slave.getSpeed())}{" "}
                   {slave.getName() === "Taita"

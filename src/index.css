@@ -9,10 +9,11 @@
 }
 
 @theme {
-  --color-btnbg: #BBDBFE;
-  --color-btnbghover: #C55DF6;
-  --color-textprimary: #BCCBFD;
-  --color-textsecondary: #C09CFA;
-  --color-textdark: #1E1E2F;
-  --color-border: #BBDBFE;
+  --color-btnbg: #bbdbfe;
+  --color-btnbghover: #c55df6;
+  --color-btnlightbg: #c09cfa;
+  --color-textprimary: #bccbfd;
+  --color-textsecondary: #c09cfa;
+  --color-textdark: #1e1e2f;
+  --color-border: #bbdbfe;
 }

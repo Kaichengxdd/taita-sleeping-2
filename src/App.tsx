@@ -32,7 +32,7 @@ function App() {
   const handleUpgrade = (slave: slavetemplate) => {
     slave.setPrice(slave.getPrice().multiply(slave.getMultiplier()));
     slave.setSpeed(slave.getSpeed().times(10));
-  }
+  };
   const handleBuy = (slave: slavetemplate) => {
     const price = slave.getPrice();
     if (aura.lt(price)) {
@@ -72,15 +72,17 @@ function App() {
     const threshold = new Decimal(10).minus(modVal);
     const price = slave.getPrice();
     const costToUpgrade = price.times(threshold);
-  
-    if (aura.lt(costToUpgrade)) { // cannot afford 10
-      const affordableUnits = Math.floor(aura.div(price).toNumber());
-      if (affordableUnits === 0) return;
+
+    if (aura.lt(costToUpgrade)) {
+      // cannot afford 10
+      const affordableUnits = aura.divide(price).floor();
+      if (affordableUnits === new Decimal(0)) return;
       const totalCost = price.times(affordableUnits);
       setAura(aura.minus(totalCost));
       slave.setAmount(slave.getAmount().plus(affordableUnits));
       slave.setNumBought(slave.getNumBought().plus(affordableUnits));
-    } else { // can afford 10
+    } else {
+      // can afford 10
       setAura(aura.minus(costToUpgrade));
       slave.setAmount(slave.getAmount().plus(threshold));
       slave.setNumBought(slave.getNumBought().plus(threshold));
@@ -126,7 +128,10 @@ function App() {
         </button>
       </div>
       <div className="w-3/5 flex justify-end">
-        <button onClick={toggleBuyMode} className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden">
+        <button
+          onClick={toggleBuyMode}
+          className="btn text-textprimary !w-25 !text-base !h-12 relative overflow-hidden"
+        >
           {buyQuantity === 1 ? "buy 1" : "buy max"}
         </button>
       </div>
@@ -176,12 +181,24 @@ function App() {
                 {slave.getName()} price: {displayNum(slave.getPrice())}
               </p>
             </div>
-            <button onClick={() => buyQuantity === 1 ? handleBuy(slave) : handleMultiBuy(slave)} className="btn relative overflow-hidden text-textsecondary">
-              <div className="absolute left-0 top-0 bg-btnbg h-full"
+            <button
+              onClick={() =>
+                buyQuantity === 1 ? handleBuy(slave) : handleMultiBuy(slave)
+              }
+              className="btn relative overflow-hidden text-textsecondary"
+            >
+              <div
+                className="absolute left-0 top-0 bg-btnlightbg h-full"
                 style={{
-                  width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`,
-                }}>
-              </div>
+                  width: `${(slave.getNumBought().mod(10).toNumber() + (aura.divide(slave.getPrice()).gt(new Decimal(10)) ? new Decimal(10).subtract(slave.getNumBought().mod(10)).toNumber() : aura.divide(slave.getPrice()).floor().toNumber())) * 10}%`, // also fine here
+                }}
+              ></div>
+              <div
+                className="absolute left-0 top-0 bg-btnbg h-full"
+                style={{
+                  width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`, // tonumber is safe as it never gets too big
+                }}
+              ></div>
               <span className="relative z-10 flex items-center justify-center w-full h-full mix-blend-difference">
                 Increase {slave.getName()}
               </span>

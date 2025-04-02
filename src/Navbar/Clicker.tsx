@@ -10,8 +10,6 @@ import aadiimage from "../img/aadi.jpg";
 import jerryimage from "../img/jerry.jpg";
 import ayushimage from "../img/ayush.jpg";
 
-console.log(localStorage)
-
 function Clicker() {
   const [aura, setAura] = useState(() => {
     const storedAura = localStorage.getItem("aura");
@@ -115,10 +113,24 @@ function Clicker() {
     localStorage.setItem("aadi", JSON.stringify(aadi));
     localStorage.setItem("jerry", JSON.stringify(jerry));
     localStorage.setItem("ayush", JSON.stringify(ayush));
+    console.log("Saved to local storage");
   }
 
   useEffect(() => {
-    saveToLocalStorage();
+    const handleBeforeUnload = () => {
+      saveToLocalStorage();
+    }
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    const handleMouseClick = () => {
+      saveToLocalStorage();
+    }
+    window.addEventListener("click", handleMouseClick);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("click", handleMouseClick);
+    }
   }, [aura, totalAura, clicks, taita, aadi, jerry, ayush]);
 
   const handleUpgrade = (slave: slavetemplate) => {

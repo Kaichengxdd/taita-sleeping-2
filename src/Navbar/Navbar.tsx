@@ -8,7 +8,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <div className="flex flex-col justify-center align-baseline gap-2 max-w-1/2 absolute top-0 p-5 left-0 z-10">
+      <div className="flex flex-col justify-center align-baseline gap-2 max-w-1/2 absolute top-0 p-5 left-0 z-20">
         <button
           className="text-textprimary text-xl w-auto border-2 border-border rounded p-2 hover:bg-gray-800 hover:cursor-pointer"
           onClick={() => setDisplay("clicker")}
@@ -23,13 +23,15 @@ const Navbar = () => {
         </button>
       </div>
       <div>
-        {display === "clicker" && (
-          <div className="fade-in z-0">
+        <div className="fade-in z-0"
+            style={{
+                display: display === "clicker" ? "block" : "none",
+            }}
+        >
             <Clicker />
-          </div>
-        )}
+        </div>
         {display === "achievements" && (
-          <div className="fade-in z-0">
+          <div className="fade-in z-10">
             <Achievements />
           </div>
         )}

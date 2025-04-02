@@ -1,5 +1,3 @@
-import React from "react";
-
 function Achievements() {
   return (
     <div className="flex flex-col gap-3 items-center w-1/5 text-textprimary">

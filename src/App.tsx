@@ -1,9 +1,9 @@
-import Clicker from "./Navbar/Clicker";
+import Navbar from "./Navbar/Navbar";
 
 function App() {
   return (
     <>
-      <Clicker />
+      <Navbar />
     </>
   )
 }

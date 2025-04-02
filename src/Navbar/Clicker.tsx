@@ -11,20 +11,31 @@ import jerryimage from "../img/jerry.jpg";
 import ayushimage from "../img/ayush.jpg";
 
 function Clicker() {
-    const [aura, setAura] = useState(new Decimal(100));
+  const [aura, setAura] = useState(new Decimal(1000000000000));
   const [totalAura, setTotalAura] = useState(new Decimal(0));
   const [clicks, setClicks] = useState(0);
   const [taita] = useState(
-    () => new slavetemplate("Taita", 0, 0.5, 10, 1000, 100),
+    () => new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0),
   );
   const [aadi] = useState(
-    () => new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500),
+    () => new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1),
   );
   const [jerry] = useState(
-    () => new slavetemplate("Jerry", 0, 0.5, 100000, 100000, 1000),
+    () => new slavetemplate("Jerry", 0, 0.5, 100000, 100000, 1000, false, 0, 2),
   );
   const [ayush] = useState(
-    () => new slavetemplate("Ayush", 0, "0.5", 10000000, 1000000, 3000),
+    () =>
+      new slavetemplate(
+        "Ayush",
+        0,
+        "0.5",
+        10000000,
+        1000000,
+        3000,
+        true,
+        20,
+        3,
+      ),
   ); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
@@ -92,6 +103,26 @@ function Clicker() {
     slave.setSelf();
   };
 
+  const resetAll = () => {
+    setAura(new Decimal(0));
+    slaves.map((slave) => {
+      slave.setAmount(0);
+      slave.setNumBought(0);
+      slave.setPrice(slave.getBasePrice());
+      slave.setSpeed(slave.getBaseSpeed());
+      slave.setSelf();
+    });
+  };
+
+  const handleUnlock = (slave: slavetemplate, targetSlave: slavetemplate) => {
+    if (targetSlave.getAmount().lt(slave.getUnlockPrice())) {
+      return;
+    }
+    resetAll();
+    slave.setLocked(false);
+    slave.setSelf();
+  };
+
   useEffect(() => {
     const auraPerSecond = taita.getAmount().times(taita.getSpeed());
 
@@ -148,8 +179,11 @@ function Clicker() {
               <div
                 key={slave.getName()}
                 className="flex items-center gap-4 border border-border rounded-xl p-4"
+                style={{ opacity: slave.getLocked() ? 0.5 : 1 }}
               >
                 <div className="relative group">
+                  {" "}
+                  {/*images*/}
                   <img
                     src={
                       slave.getName() === "Taita"
@@ -165,6 +199,7 @@ function Clicker() {
                     alt={slave.getName()}
                     className="w-20 h-25 rounded"
                   />
+                  {/*tooltip*/}
                   <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded-2xl border border-border tooltip">
                     <p className="text-textsecondary text-lg">
                       Each {slave.getName()} produces{" "}
@@ -182,6 +217,7 @@ function Clicker() {
                     </p>
                   </div>
                 </div>
+                {/*display for amount and price*/}
                 <div className="flex flex-col flex-grow text-textprimary">
                   <p className="text-4xl">
                     {slave.getName()}: {displayNum(slave.getAmount())}
@@ -190,37 +226,79 @@ function Clicker() {
                     {slave.getName()} price: {displayNum(slave.getPrice())}
                   </p>
                 </div>
-                <button
-                  onClick={() =>
-                    buyQuantity === 1 ? handleBuy(slave) : handleMultiBuy(slave)
-                  }
-                  className="btn relative overflow-hidden text-textsecondary"
-                >
-                  <div
-                    className="absolute left-0 top-0 bg-btnlightbg h-full transition-all duration-300 ease-in-out animate-flash"
-                    style={{
-                      width:
-                        buyQuantity === 1
-                          ? `${aura.lt(slave.getPrice()) ? 0 : slave.getNumBought().mod(10).multiply(10).toNumber() + 10}%`
-                          : `${(slave.getNumBought().mod(10).toNumber() + (aura.divide(slave.getPrice()).gt(new Decimal(10)) ? new Decimal(10).subtract(slave.getNumBought().mod(10)).toNumber() : aura.divide(slave.getPrice()).floor().toNumber())) * 10}%`, // also fine here
-                    }}
-                  ></div>
-                  <div
-                    className="absolute left-0 top-0 bg-btnbg h-full transition-all duration-300 ease-in-out"
-                    style={{
-                      width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`, // tonumber is safe as it never gets too big
-                    }}
-                  ></div>
-                  <span className="relative z-10 flex items-center justify-center w-full h-full mix-blend-difference">
-                    Increase {slave.getName()}
-                  </span>
-                </button>
+                {slave.getLocked() ? (
+                  // locked
+                  <div className="relative">
+                    <button
+                      onClick={() =>
+                        handleUnlock(slave, slaves[slave.getIndex() - 1])
+                      }
+                      className="btn absolute inset-0 z-20 bg-btnbghover text-white"
+                    >
+                      Unlock
+                    </button>
+                    <button className="btn invisible">
+                      Increase {slave.getName()}
+                    </button>
+                  </div>
+                ) : (
+                  // unlocked
+                  <button
+                    onClick={() =>
+                      buyQuantity === 1
+                        ? handleBuy(slave)
+                        : handleMultiBuy(slave)
+                    }
+                    className="btn relative overflow-hidden text-textsecondary"
+                  >
+                    <div
+                      className="absolute left-0 top-0 bg-btnlightbg h-full transition-all duration-300 ease-in-out animate-flash"
+                      style={{
+                        width:
+                          buyQuantity === 1
+                            ? `${
+                                aura.lt(slave.getPrice())
+                                  ? 0
+                                  : slave
+                                      .getNumBought()
+                                      .mod(10)
+                                      .multiply(10)
+                                      .toNumber() + 10
+                              }%`
+                            : `${
+                                (slave.getNumBought().mod(10).toNumber() +
+                                  (aura
+                                    .divide(slave.getPrice())
+                                    .gt(new Decimal(10))
+                                    ? new Decimal(10)
+                                        .subtract(slave.getNumBought().mod(10))
+                                        .toNumber()
+                                    : aura
+                                        .divide(slave.getPrice())
+                                        .floor()
+                                        .toNumber())) *
+                                10
+                              }%`,
+                      }}
+                    ></div>
+                    <div
+                      className="absolute left-0 top-0 bg-btnbg h-full transition-all duration-300 ease-in-out"
+                      style={{
+                        width: `${slave.getNumBought().mod(10).multiply(10).toNumber()}%`,
+                      }}
+                    ></div>
+                    <span className="relative z-10 flex items-center justify-center w-full h-full mix-blend-difference">
+                      Increase {slave.getName()}
+                    </span>
+                  </button>
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
     </div>
-);}
+  );
+}
 
 export default Clicker;

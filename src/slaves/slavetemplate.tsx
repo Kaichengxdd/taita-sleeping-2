@@ -5,10 +5,14 @@ class slavetemplate {
   amount: Decimal;
   numBought: Decimal;
   speed: Decimal;
+  baseSpeed: Decimal;
   price: Decimal;
   basePrice: Decimal;
   multiplier: Decimal;
   upgradePrice: Decimal;
+  locked: boolean;
+  unlockPrice: Decimal;
+  index: number;
 
   constructor(
     name: string,
@@ -17,15 +21,22 @@ class slavetemplate {
     price: number,
     multiplyer: number,
     upgradePrice: number,
+    locked: boolean,
+    unlockPrice: number,
+    index: number,
   ) {
     this.name = name;
     this.amount = new Decimal(amount);
     this.numBought = new Decimal(0);
     this.speed = new Decimal(speed);
+    this.baseSpeed = new Decimal(speed);
     this.price = new Decimal(price);
     this.basePrice = new Decimal(price);
     this.multiplier = new Decimal(multiplyer);
     this.upgradePrice = new Decimal(upgradePrice);
+    this.locked = locked;
+    this.unlockPrice = new Decimal(unlockPrice);
+    this.index = index;
   }
 
   setSelf(): slavetemplate {
@@ -60,9 +71,21 @@ class slavetemplate {
     this.multiplier =
       multiplier instanceof Decimal ? multiplier : new Decimal(multiplier);
   }
+  setLocked(locked: boolean) {
+    this.locked = locked;
+  }
+
+  setUnlockPrice(unlockPrice: number | Decimal) {
+    this.unlockPrice =
+      unlockPrice instanceof Decimal ? unlockPrice : new Decimal(unlockPrice);
+  }
 
   getSpeed(): Decimal {
     return this.speed;
+  }
+
+  getBaseSpeed(): Decimal {
+    return this.baseSpeed;
   }
 
   getPrice(): Decimal {
@@ -91,6 +114,17 @@ class slavetemplate {
 
   getNumBought(): Decimal {
     return this.numBought;
+  }
+
+  getLocked(): boolean {
+    return this.locked;
+  }
+
+  getUnlockPrice(): Decimal {
+    return this.unlockPrice;
+  }
+  getIndex(): number {
+    return this.index;
   }
 }
 

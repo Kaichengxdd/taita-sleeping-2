@@ -13,7 +13,7 @@ import ayushimage from "../img/ayush.jpg";
 function Clicker() {
   const [aura, setAura] = useState(() => {
     const storedAura = localStorage.getItem("aura");
-    return storedAura ? new Decimal(storedAura) : new Decimal(100000000);
+    return storedAura ? new Decimal(storedAura) : new Decimal(0);
   });
   const [totalAura, setTotalAura] = useState(() => {
     const storedTotalAura = localStorage.getItem("totalAura");

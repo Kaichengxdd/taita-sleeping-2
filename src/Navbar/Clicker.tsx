@@ -10,36 +10,116 @@ import aadiimage from "../img/aadi.jpg";
 import jerryimage from "../img/jerry.jpg";
 import ayushimage from "../img/ayush.jpg";
 
+console.log(localStorage)
+
 function Clicker() {
-  const [aura, setAura] = useState(new Decimal(1000000000000));
-  const [totalAura, setTotalAura] = useState(new Decimal(0));
-  const [clicks, setClicks] = useState(0);
-  const [taita] = useState(
-    () => new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0),
-  );
-  const [aadi] = useState(
-    () => new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1),
-  );
-  const [jerry] = useState(
-    () => new slavetemplate("Jerry", 0, 0.5, 100000, 100000, 1000, false, 0, 2),
-  );
+  const [aura, setAura] = useState(() => {
+    const storedAura = localStorage.getItem("aura");
+    return storedAura ? new Decimal(storedAura) : new Decimal(100000000);
+  });
+  const [totalAura, setTotalAura] = useState(() => {
+    const storedTotalAura = localStorage.getItem("totalAura");
+    return storedTotalAura ? new Decimal(storedTotalAura) : new Decimal(0);
+  });
+  const [clicks, setClicks] = useState(() => {
+    const storedClicks = localStorage.getItem("clicks");
+    return storedClicks ? parseInt(storedClicks) : 0;
+  });
+  const [taita] = useState(() => {
+    const storedTaita = localStorage.getItem("taita");
+    if (storedTaita) {
+      const parsedTaita = JSON.parse(storedTaita);
+      return new slavetemplate(
+        parsedTaita.name,
+        parsedTaita.amount,
+        parsedTaita.speed,
+        parsedTaita.basePrice,
+        parsedTaita.multiplier,
+        parsedTaita.upgradePrice,
+        parsedTaita.locked,
+        parsedTaita.unlockPrice,
+        parsedTaita.index,
+      );
+    } else {
+      return new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0)
+    }
+  });
+  const [aadi] = useState(() => {
+    const storedAadi = localStorage.getItem("aadi");
+    if (storedAadi) {
+      const parsedAadi = JSON.parse(storedAadi);
+      return new slavetemplate(
+        parsedAadi.name,
+        parsedAadi.amount,
+        parsedAadi.speed,
+        parsedAadi.basePrice,
+        parsedAadi.multiplier,
+        parsedAadi.upgradePrice,
+        parsedAadi.locked,
+        parsedAadi.unlockPrice,
+        parsedAadi.index,
+      );
+    } else {
+      return new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1)
+    }
+  });
+  const [jerry] = useState(() => {
+    const storedJerry = localStorage.getItem("jerry");
+    if (storedJerry) {
+      const parsedJerry = JSON.parse(storedJerry);
+      return new slavetemplate(
+        parsedJerry.name,
+        parsedJerry.amount,
+        parsedJerry.speed,
+        parsedJerry.basePrice,
+        parsedJerry.multiplier,
+        parsedJerry.upgradePrice,
+        parsedJerry.locked,
+        parsedJerry.unlockPrice,
+        parsedJerry.index,
+      );
+    } else {
+      return new slavetemplate("Jerry", 0, 0.5, 10000, 100000, 1000, false, 0, 2)
+    }
+  });
   const [ayush] = useState(
-    () =>
-      new slavetemplate(
-        "Ayush",
-        0,
-        "0.5",
-        10000000,
-        1000000,
-        3000,
-        true,
-        20,
-        3,
-      ),
+    () => {
+      const storedAyush = localStorage.getItem("ayush");
+      if (storedAyush) {
+        const parsedAyush = JSON.parse(storedAyush);
+        return new slavetemplate(
+          parsedAyush.name,
+          parsedAyush.amount,
+          parsedAyush.speed,
+          parsedAyush.basePrice,
+          parsedAyush.multiplier,
+          parsedAyush.upgradePrice,
+          parsedAyush.locked,
+          parsedAyush.unlockPrice,
+          parsedAyush.index,
+        );
+      } else {
+        return new slavetemplate("Ayush", 0, 0.5, 100000, 1000000, 10000, false, 0, 3)
+      }
+    }
   ); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
   const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
+
+  const saveToLocalStorage = () => {
+    localStorage.setItem("aura", aura.toString());
+    localStorage.setItem("totalAura", totalAura.toString());
+    localStorage.setItem("clicks", clicks.toString());
+    localStorage.setItem("taita", JSON.stringify(taita));
+    localStorage.setItem("aadi", JSON.stringify(aadi));
+    localStorage.setItem("jerry", JSON.stringify(jerry));
+    localStorage.setItem("ayush", JSON.stringify(ayush));
+  }
+
+  useEffect(() => {
+    saveToLocalStorage();
+  }, [aura, totalAura, clicks, taita, aadi, jerry, ayush]);
 
   const handleUpgrade = (slave: slavetemplate) => {
     slave.setPrice(slave.getPrice().multiply(slave.getMultiplier()));

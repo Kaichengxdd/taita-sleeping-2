@@ -23,12 +23,13 @@ const Navbar = () => {
         </button>
       </div>
       <div>
-        <div className="fade-in z-0"
-            style={{
-                display: display === "clicker" ? "block" : "none",
-            }}
+        <div
+          className="fade-in z-0"
+          style={{
+            display: display === "clicker" ? "block" : "none",
+          }}
         >
-            <Clicker />
+          <Clicker />
         </div>
         {display === "achievements" && (
           <div className="fade-in z-10">

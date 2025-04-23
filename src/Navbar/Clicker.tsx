@@ -39,7 +39,7 @@ function Clicker() {
         parsedTaita.index,
       );
     } else {
-      return new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0)
+      return new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0);
     }
   });
   const [aadi] = useState(() => {
@@ -58,7 +58,7 @@ function Clicker() {
         parsedAadi.index,
       );
     } else {
-      return new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1)
+      return new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1);
     }
   });
   const [jerry] = useState(() => {
@@ -77,30 +77,48 @@ function Clicker() {
         parsedJerry.index,
       );
     } else {
-      return new slavetemplate("Jerry", 0, 0.5, 10000, 100000, 1000, false, 0, 2)
+      return new slavetemplate(
+        "Jerry",
+        0,
+        0.5,
+        10000,
+        100000,
+        1000,
+        false,
+        0,
+        2,
+      );
     }
   });
-  const [ayush] = useState(
-    () => {
-      const storedAyush = localStorage.getItem("ayush");
-      if (storedAyush) {
-        const parsedAyush = JSON.parse(storedAyush);
-        return new slavetemplate(
-          parsedAyush.name,
-          parsedAyush.amount,
-          parsedAyush.speed,
-          parsedAyush.basePrice,
-          parsedAyush.multiplier,
-          parsedAyush.upgradePrice,
-          parsedAyush.locked,
-          parsedAyush.unlockPrice,
-          parsedAyush.index,
-        );
-      } else {
-        return new slavetemplate("Ayush", 0, 0.5, 100000, 1000000, 10000, false, 0, 3)
-      }
+  const [ayush] = useState(() => {
+    const storedAyush = localStorage.getItem("ayush");
+    if (storedAyush) {
+      const parsedAyush = JSON.parse(storedAyush);
+      return new slavetemplate(
+        parsedAyush.name,
+        parsedAyush.amount,
+        parsedAyush.speed,
+        parsedAyush.basePrice,
+        parsedAyush.multiplier,
+        parsedAyush.upgradePrice,
+        parsedAyush.locked,
+        parsedAyush.unlockPrice,
+        parsedAyush.index,
+      );
+    } else {
+      return new slavetemplate(
+        "Ayush",
+        0,
+        0.5,
+        100000,
+        1000000,
+        10000,
+        false,
+        0,
+        3,
+      );
     }
-  ); // only string works here to parse BIG values (small is fine) into Decimal
+  }); // only string works here to parse BIG values (small is fine) into Decimal
   const [slaves] = useState([taita, aadi, jerry, ayush]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
   const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
@@ -114,23 +132,22 @@ function Clicker() {
     localStorage.setItem("jerry", JSON.stringify(jerry));
     localStorage.setItem("ayush", JSON.stringify(ayush));
     console.log("Saved to local storage");
-  }
-
+  };
+  const handleBeforeUnload = () => {
+    saveToLocalStorage();
+  };
+  const handleMouseClick = () => {
+    saveToLocalStorage();
+  };
   useEffect(() => {
-    const handleBeforeUnload = () => {
-      saveToLocalStorage();
-    }
     window.addEventListener("beforeunload", handleBeforeUnload);
 
-    const handleMouseClick = () => {
-      saveToLocalStorage();
-    }
     window.addEventListener("click", handleMouseClick);
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("click", handleMouseClick);
-    }
+    };
   }, [aura, totalAura, clicks, taita, aadi, jerry, ayush]);
 
   const handleUpgrade = (slave: slavetemplate) => {
@@ -215,6 +232,15 @@ function Clicker() {
     slave.setSelf();
   };
 
+  /* CLEAR STORAGE(TESTING) */
+  const clearLocalStorage = () => {
+    window.removeEventListener("beforeunload", handleBeforeUnload);
+    window.removeEventListener("click", handleMouseClick);
+
+    localStorage.clear();
+    window.location.reload();
+  };
+
   useEffect(() => {
     const auraPerSecond = taita.getAmount().times(taita.getSpeed());
 
@@ -251,6 +277,17 @@ function Clicker() {
           Increase Aura
         </button>
       </div>
+      {/* CLEAR STORAGE */}
+      <div className="w-3/5 flex justify-end">
+        <button
+          onClick={clearLocalStorage}
+          className="btn text-textprimary !w-auto !text-base !h-12 relative overflow-hidden"
+          style={{ backgroundColor: "#c09cfa" }}
+        >
+          Clear Storage
+        </button>
+      </div>
+      {/* END OF CLEAR STORAGE */}
       <div className="flex flex-row w-full p-8">
         <div className="flex flex-col gap-3 w-full items-center">
           <div className="w-3/5 flex justify-end">

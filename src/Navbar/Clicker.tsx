@@ -31,7 +31,7 @@ function Clicker() {
         parsedTaita.name,
         parsedTaita.amount,
         parsedTaita.speed,
-        parsedTaita.basePrice,
+        parsedTaita.price,
         parsedTaita.multiplier,
         parsedTaita.upgradePrice,
         parsedTaita.locked,
@@ -50,7 +50,7 @@ function Clicker() {
         parsedAadi.name,
         parsedAadi.amount,
         parsedAadi.speed,
-        parsedAadi.basePrice,
+        parsedAadi.price,
         parsedAadi.multiplier,
         parsedAadi.upgradePrice,
         parsedAadi.locked,
@@ -69,7 +69,7 @@ function Clicker() {
         parsedJerry.name,
         parsedJerry.amount,
         parsedJerry.speed,
-        parsedJerry.basePrice,
+        parsedJerry.price,
         parsedJerry.multiplier,
         parsedJerry.upgradePrice,
         parsedJerry.locked,
@@ -98,7 +98,7 @@ function Clicker() {
         parsedAyush.name,
         parsedAyush.amount,
         parsedAyush.speed,
-        parsedAyush.basePrice,
+        parsedAyush.price,
         parsedAyush.multiplier,
         parsedAyush.upgradePrice,
         parsedAyush.locked,
@@ -113,8 +113,8 @@ function Clicker() {
         100000,
         1000000,
         10000,
-        false,
-        0,
+        true,
+        20,
         3,
       );
     }
@@ -123,6 +123,7 @@ function Clicker() {
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
   const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
 
+  // Save to local storage (idk wtf these are @michi)
   const saveToLocalStorage = () => {
     localStorage.setItem("aura", aura.toString());
     localStorage.setItem("totalAura", totalAura.toString());
@@ -150,10 +151,13 @@ function Clicker() {
     };
   }, [aura, totalAura, clicks, taita, aadi, jerry, ayush]);
 
+  // Upgrade logic
   const handleUpgrade = (slave: slavetemplate) => {
     slave.setPrice(slave.getPrice().multiply(slave.getMultiplier()));
     slave.setSpeed(slave.getSpeed().times(10));
   };
+
+  // Buy logic
   const handleBuy = (slave: slavetemplate) => {
     const price = slave.getPrice();
     if (aura.lt(price)) {
@@ -173,20 +177,24 @@ function Clicker() {
     slave.setSelf();
   };
 
+  // Click handler
   const handleClick = () => {
     setAura((aura) => aura.plus(1));
     setTotalAura((totalAura) => totalAura.plus(1));
     setClicks((clicks) => clicks + 1);
   };
 
+  // Force re-render function
   const forceRender = () => {
     setDummy(dummy + 1);
   };
 
+  // Toggle buy mode between single and multi-buy
   const toggleBuyMode = () => {
     setBuyQuantity((prev) => (prev === 1 ? 10 : 1));
   };
 
+  // Handle multi-buy logic
   const handleMultiBuy = (slave: slavetemplate) => {
     const currentBought = slave.getNumBought();
     const modVal = currentBought.mod(10);
@@ -212,6 +220,7 @@ function Clicker() {
     slave.setSelf();
   };
 
+  // Reset all slaves and aura
   const resetAll = () => {
     setAura(new Decimal(0));
     slaves.map((slave) => {
@@ -223,6 +232,7 @@ function Clicker() {
     });
   };
 
+  // Handle unlock logic
   const handleUnlock = (slave: slavetemplate, targetSlave: slavetemplate) => {
     if (targetSlave.getAmount().lt(slave.getUnlockPrice())) {
       return;
@@ -241,6 +251,8 @@ function Clicker() {
     window.location.reload();
   };
 
+  /* END OF CLEAR STORAGE */
+  // Effect to handle aura generation and slave production
   useEffect(() => {
     const auraPerSecond = taita.getAmount().times(taita.getSpeed());
 

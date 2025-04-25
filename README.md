@@ -1,5 +1,9 @@
 Update log
 
+V1.0.3
+
+- hotfix on price issue on unlocking
+
 V1.0.2
 
 - hotfix on price issue on reload

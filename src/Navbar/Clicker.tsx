@@ -13,7 +13,7 @@ import ayushimage from "../img/ayush.jpg";
 function Clicker() {
   const [aura, setAura] = useState(() => {
     const storedAura = localStorage.getItem("aura");
-    return storedAura ? new Decimal(storedAura) : new Decimal(0);
+    return storedAura ? new Decimal(storedAura) : new Decimal(10000000);
   });
   const [totalAura, setTotalAura] = useState(() => {
     const storedTotalAura = localStorage.getItem("totalAura");
@@ -32,6 +32,7 @@ function Clicker() {
         parsedTaita.amount,
         parsedTaita.speed,
         parsedTaita.price,
+        parsedTaita.basePrice,
         parsedTaita.multiplier,
         parsedTaita.upgradePrice,
         parsedTaita.locked,
@@ -39,7 +40,7 @@ function Clicker() {
         parsedTaita.index,
       );
     } else {
-      return new slavetemplate("Taita", 0, 0.5, 10, 1000, 100, false, 0, 0);
+      return new slavetemplate("Taita", 0, 0.5, 10, 10, 1000, 100, false, 0, 0);
     }
   });
   const [aadi] = useState(() => {
@@ -51,6 +52,7 @@ function Clicker() {
         parsedAadi.amount,
         parsedAadi.speed,
         parsedAadi.price,
+        parsedAadi.basePrice,
         parsedAadi.multiplier,
         parsedAadi.upgradePrice,
         parsedAadi.locked,
@@ -58,7 +60,7 @@ function Clicker() {
         parsedAadi.index,
       );
     } else {
-      return new slavetemplate("Aadi", 0, 0.5, 1000, 10000, 500, false, 0, 1);
+      return new slavetemplate("Aadi", 0, 0.5, 1000, 1000, 10000, 500, false, 0, 1);
     }
   });
   const [jerry] = useState(() => {
@@ -70,6 +72,7 @@ function Clicker() {
         parsedJerry.amount,
         parsedJerry.speed,
         parsedJerry.price,
+        parsedJerry.basePrice,
         parsedJerry.multiplier,
         parsedJerry.upgradePrice,
         parsedJerry.locked,
@@ -81,6 +84,7 @@ function Clicker() {
         "Jerry",
         0,
         0.5,
+        10000,
         10000,
         100000,
         1000,
@@ -99,6 +103,7 @@ function Clicker() {
         parsedAyush.amount,
         parsedAyush.speed,
         parsedAyush.price,
+        parsedAyush.basePrice,
         parsedAyush.multiplier,
         parsedAyush.upgradePrice,
         parsedAyush.locked,
@@ -110,6 +115,7 @@ function Clicker() {
         "Ayush",
         0,
         0.5,
+        100000,
         100000,
         1000000,
         10000,

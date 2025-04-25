@@ -19,6 +19,7 @@ class slavetemplate {
     amount: number | string,
     speed: number | string,
     price: number,
+    basePrice: number,
     multiplyer: number,
     upgradePrice: number,
     locked: boolean,
@@ -31,7 +32,7 @@ class slavetemplate {
     this.speed = new Decimal(speed);
     this.baseSpeed = new Decimal(speed);
     this.price = new Decimal(price);
-    this.basePrice = new Decimal(price);
+    this.basePrice = new Decimal(basePrice);
     this.multiplier = new Decimal(multiplyer);
     this.upgradePrice = new Decimal(upgradePrice);
     this.locked = locked;

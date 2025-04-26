@@ -13,7 +13,7 @@ import ayushimage from "../img/ayush.jpg";
 function Clicker() {
   const [aura, setAura] = useState(() => {
     const storedAura = localStorage.getItem("aura");
-    return storedAura ? new Decimal(storedAura) : new Decimal(10000000);
+    return storedAura ? new Decimal(storedAura) : new Decimal(1000000000);
   });
   const [totalAura, setTotalAura] = useState(() => {
     const storedTotalAura = localStorage.getItem("totalAura");
@@ -23,6 +23,7 @@ function Clicker() {
     const storedClicks = localStorage.getItem("clicks");
     return storedClicks ? parseInt(storedClicks) : 0;
   });
+
   const [taita] = useState(() => {
     const storedTaita = localStorage.getItem("taita");
     if (storedTaita) {
@@ -60,7 +61,18 @@ function Clicker() {
         parsedAadi.index,
       );
     } else {
-      return new slavetemplate("Aadi", 0, 0.5, 1000, 1000, 10000, 500, false, 0, 1);
+      return new slavetemplate(
+        "Aadi",
+        0,
+        0.5,
+        1000,
+        1000,
+        10000,
+        500,
+        false,
+        0,
+        1,
+      );
     }
   });
   const [jerry] = useState(() => {
@@ -365,27 +377,30 @@ function Clicker() {
                   </div>
                 </div>
                 {/*display for amount and price*/}
-                <div className="flex flex-col flex-grow text-textprimary">
-                  <p className="text-4xl">
-                    {slave.getName()}: {displayNum(slave.getAmount())}
-                  </p>
-                  <p className="text-3xl">
-                    {slave.getName()} price: {displayNum(slave.getPrice())}
-                  </p>
-                </div>
+                {!slave.getLocked() && (
+                  <div className="flex flex-col flex-grow text-textprimary">
+                    <p className="text-4xl">
+                      {slave.getName()}: {displayNum(slave.getAmount())}
+                    </p>
+                    <p className="text-3xl">
+                      {slave.getName()} price: {displayNum(slave.getPrice())}
+                    </p>
+                  </div>
+                )}
+                {/*check for locked or not*/}
                 {slave.getLocked() ? (
                   // locked
-                  <div className="relative">
+                  <div className="">
                     <button
                       onClick={() =>
                         handleUnlock(slave, slaves[slave.getIndex() - 1])
                       }
-                      className="btn absolute inset-0 z-20 bg-btnbghover text-white"
+                      className="btn !w-2xl bg-btnbghover text-white" // TO BE CHANGED HELP WITH CSS!
                     >
-                      Unlock
-                    </button>
-                    <button className="btn invisible">
-                      Increase {slave.getName()}
+                      <p>Unlock {slave.getName()}:</p>
+                      <p>
+                        {displayNum(slave.getUnlockPrice())}{" "}
+                        {slaves[slave.getIndex() - 1].getName()}, reset your aura and producers</p>
                     </button>
                   </div>
                 ) : (

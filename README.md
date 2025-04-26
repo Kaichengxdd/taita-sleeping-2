@@ -1,5 +1,9 @@
 Update log
 
+V1.0.4
+
+- locked css minor change but still need major work because its terrible
+
 V1.0.3
 
 - hotfix on price issue on unlocking

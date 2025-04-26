@@ -13,7 +13,7 @@ import ayushimage from "../img/ayush.jpg";
 function Clicker() {
   const [aura, setAura] = useState(() => {
     const storedAura = localStorage.getItem("aura");
-    return storedAura ? new Decimal(storedAura) : new Decimal(1000000000);
+    return storedAura ? new Decimal(storedAura) : new Decimal(100000000000);
   });
   const [totalAura, setTotalAura] = useState(() => {
     const storedTotalAura = localStorage.getItem("totalAura");
@@ -137,7 +137,37 @@ function Clicker() {
       );
     }
   }); // only string works here to parse BIG values (small is fine) into Decimal
-  const [slaves] = useState([taita, aadi, jerry, ayush]);
+  const [kwan] = useState(() => {
+    const storedKwan = localStorage.getItem("kwan");
+    if (storedKwan) {
+      const parsedKwan = JSON.parse(storedKwan);
+      return new slavetemplate(
+        parsedKwan.name,
+        parsedKwan.amount,
+        parsedKwan.speed,
+        parsedKwan.price,
+        parsedKwan.basePrice,
+        parsedKwan.multiplier,
+        parsedKwan.upgradePrice,
+        parsedKwan.locked,
+        parsedKwan.unlockPrice,
+        parsedKwan.index,
+      );
+    }
+    return new slavetemplate(
+      "Kwan",
+      0,
+      0.5,
+      1000000,
+      1000000,
+      10000000,
+      100000,
+      true,
+      20,
+      4,
+    );
+  });
+  const [slaves] = useState([taita, aadi, jerry, ayush, kwan]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
   const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
 
@@ -150,6 +180,7 @@ function Clicker() {
     localStorage.setItem("aadi", JSON.stringify(aadi));
     localStorage.setItem("jerry", JSON.stringify(jerry));
     localStorage.setItem("ayush", JSON.stringify(ayush));
+    localStorage.setItem("kwan", JSON.stringify(kwan));
     console.log("Saved to local storage");
   };
   const handleBeforeUnload = () => {
@@ -167,7 +198,7 @@ function Clicker() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("click", handleMouseClick);
     };
-  }, [aura, totalAura, clicks, taita, aadi, jerry, ayush]);
+  }, [aura, totalAura, clicks, taita, aadi, jerry, ayush, kwan]);
 
   // Upgrade logic
   const handleUpgrade = (slave: slavetemplate) => {
@@ -365,13 +396,7 @@ function Clicker() {
                       {displayNum(slave.getSpeed())}{" "}
                       {slave.getName() === "Taita"
                         ? "aura"
-                        : slave.getName() === "Aadi"
-                          ? "Taita"
-                          : slave.getName() === "Jerry"
-                            ? "Aadi"
-                            : slave.getName() === "Ayush"
-                              ? "Jerry"
-                              : "N/A"}{" "}
+                        : slaves[slave.getIndex() - 1].getName()}{" "}
                       per second.
                     </p>
                   </div>
@@ -400,7 +425,9 @@ function Clicker() {
                       <p>Unlock {slave.getName()}:</p>
                       <p>
                         {displayNum(slave.getUnlockPrice())}{" "}
-                        {slaves[slave.getIndex() - 1].getName()}, reset your aura and producers</p>
+                        {slaves[slave.getIndex() - 1].getName()}, reset your
+                        aura and producers
+                      </p>
                     </button>
                   </div>
                 ) : (

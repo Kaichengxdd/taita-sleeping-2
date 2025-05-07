@@ -1,5 +1,9 @@
 Update log
 
+V1.1.1
+
+- added kwan image, fixed css of unlock buttons (thx michi)
+
 V1.1.0
 
 - added kwan (no images yet)

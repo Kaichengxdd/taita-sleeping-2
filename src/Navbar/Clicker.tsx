@@ -9,6 +9,7 @@ import taitaimage from "../img/taita.png";
 import aadiimage from "../img/aadi.jpg";
 import jerryimage from "../img/jerry.jpg";
 import ayushimage from "../img/ayush.jpg";
+import kwanimage from "../img/kwan.jpg";
 
 function Clicker() {
   const [aura, setAura] = useState(() => {
@@ -368,7 +369,7 @@ function Clicker() {
             {slaves.map((slave) => (
               <div
                 key={slave.getName()}
-                className="flex items-center gap-4 border border-border rounded-xl p-4"
+                className="flex flex-row justify-center items-center gap-4 border border-border rounded-xl p-4"
                 style={{ opacity: slave.getLocked() ? 0.5 : 1 }}
               >
                 <div className="relative group">
@@ -384,13 +385,15 @@ function Clicker() {
                             ? jerryimage
                             : slave.getName() === "Ayush"
                               ? ayushimage
-                              : ""
+                              : slave.getName() === "Kwan"
+                                ? kwanimage
+                                : ""
                     }
                     alt={slave.getName()}
-                    className="w-20 h-25 rounded"
+                    className="!w-20 !h-25 rounded max-w-none"
                   />
                   {/*tooltip*/}
-                  <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded-2xl border border-border tooltip">
+                  <div className="absolute w-100 bottom-full transform mb-1 invisible group-hover:visible p-1.5 bg-gray-900 rounded-2xl border border-border tooltip z-50">
                     <p className="text-textsecondary text-lg">
                       Each {slave.getName()} produces{" "}
                       {displayNum(slave.getSpeed())}{" "}
@@ -415,12 +418,12 @@ function Clicker() {
                 {/*check for locked or not*/}
                 {slave.getLocked() ? (
                   // locked
-                  <div className="">
+                  <div className="w-full">
                     <button
                       onClick={() =>
                         handleUnlock(slave, slaves[slave.getIndex() - 1])
                       }
-                      className="btn !w-2xl bg-btnbghover text-white" // TO BE CHANGED HELP WITH CSS!
+                      className="btn bg-btnbghover text-white !w-full"
                     >
                       <p>Unlock {slave.getName()}:</p>
                       <p>

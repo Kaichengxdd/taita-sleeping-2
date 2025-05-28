@@ -33,7 +33,7 @@
 }
 
 .achv {
-  @apply text-2xl border-2 w-2xs h-fit border-border p-1 rounded-2xl;
+  @apply text-2xl text-center border-2 w-[13rem] h-fit border-border p-4 rounded m-auto;
 }
 
 .fade-in {

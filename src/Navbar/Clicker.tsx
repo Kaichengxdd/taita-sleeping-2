@@ -9,7 +9,7 @@ import taitaimage from "../img/taita.png";
 import aadiimage from "../img/aadi.jpg";
 import jerryimage from "../img/jerry.jpg";
 import ayushimage from "../img/ayush.jpg";
-import kwanimage from "../img/kwan.jpg";
+import michiimage from "../img/michi.jpg";
 
 function Clicker() {
   const [aura, setAura] = useState(() => {
@@ -138,25 +138,25 @@ function Clicker() {
       );
     }
   }); // only string works here to parse BIG values (small is fine) into Decimal
-  const [kwan] = useState(() => {
-    const storedKwan = localStorage.getItem("kwan");
-    if (storedKwan) {
-      const parsedKwan = JSON.parse(storedKwan);
+  const [michi] = useState(() => {
+    const storedMichi = localStorage.getItem("michi");
+    if (storedMichi) {
+      const parsedMichi = JSON.parse(storedMichi);
       return new slavetemplate(
-        parsedKwan.name,
-        parsedKwan.amount,
-        parsedKwan.speed,
-        parsedKwan.price,
-        parsedKwan.basePrice,
-        parsedKwan.multiplier,
-        parsedKwan.upgradePrice,
-        parsedKwan.locked,
-        parsedKwan.unlockPrice,
-        parsedKwan.index,
+        parsedMichi.name,
+        parsedMichi.amount,
+        parsedMichi.speed,
+        parsedMichi.price,
+        parsedMichi.basePrice,
+        parsedMichi.multiplier,
+        parsedMichi.upgradePrice,
+        parsedMichi.locked,
+        parsedMichi.unlockPrice,
+        parsedMichi.index,
       );
     }
     return new slavetemplate(
-      "Kwan",
+      "Michi",
       0,
       0.5,
       1000000,
@@ -168,7 +168,7 @@ function Clicker() {
       4,
     );
   });
-  const [slaves] = useState([taita, aadi, jerry, ayush, kwan]);
+  const [slaves] = useState([taita, aadi, jerry, ayush, michi]);
   const [dummy, setDummy] = useState(0); // dummy state to force re-render
   const [buyQuantity, setBuyQuantity] = useState(1); // 1 for single, 10 for max
 
@@ -181,7 +181,7 @@ function Clicker() {
     localStorage.setItem("aadi", JSON.stringify(aadi));
     localStorage.setItem("jerry", JSON.stringify(jerry));
     localStorage.setItem("ayush", JSON.stringify(ayush));
-    localStorage.setItem("kwan", JSON.stringify(kwan));
+    localStorage.setItem("michi", JSON.stringify(michi));
     console.log("Saved to local storage");
   };
   const handleBeforeUnload = () => {
@@ -199,7 +199,7 @@ function Clicker() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("click", handleMouseClick);
     };
-  }, [aura, totalAura, clicks, taita, aadi, jerry, ayush, kwan]);
+  }, [aura, totalAura, clicks, taita, aadi, jerry, ayush, michi]);
 
   // Upgrade logic
   const handleUpgrade = (slave: slavetemplate) => {
@@ -272,7 +272,7 @@ function Clicker() {
 
   // Reset all slaves and aura
   const resetAll = () => {
-    setAura(new Decimal(0));
+    setAura(new Decimal(1000000000000000));
     slaves.map((slave) => {
       slave.setAmount(0);
       slave.setNumBought(0);
@@ -385,8 +385,8 @@ function Clicker() {
                             ? jerryimage
                             : slave.getName() === "Ayush"
                               ? ayushimage
-                              : slave.getName() === "Kwan"
-                                ? kwanimage
+                              : slave.getName() === "Michi"
+                                ? michiimage
                                 : ""
                     }
                     alt={slave.getName()}
